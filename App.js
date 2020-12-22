@@ -19,11 +19,15 @@ export default function App() {
     });
   };
 
+  const cancelGoalHandler = () =>{
+    setIsAddMode(false);
+  };
+
   return (
     
     <View style={styles.container}>
       {/*<Button title = "Add New Goal!" onPress = {() => setIsAddMode(true)}/>*/}
-      <GoalInput onAddGoal={addGoalHandler} visible = {isAddMode}/>
+      <GoalInput onAddGoal={addGoalHandler} visible = {isAddMode} onCancel = {cancelGoalHandler}/>
       <FlatList data={courseGoals} renderItem = {itemData =>( 
           <GoalItem id = {itemData.item.key} onDelete = {removeGoalHandler} title = {itemData.item.value}/> )}/>
     </View>
