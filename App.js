@@ -1,32 +1,31 @@
 import { StatusBar } from 'expo-status-bar';
 import React, {useState}from 'react';
-import { StyleSheet, Text, View, TextInput, Button, ScrollView, FlatList} from 'react-native';
-
+import { StyleSheet, View, FlatList, Button} from 'react-native';
+import GoalItem from './components/goalItem';
+import GoalInput from './components/goalInput';
 export default function App() {
   
-  const [enteredGoal, setEnteredGoal] = useState('');
   const [courseGoals, setCourseGoals] = useState([]);
-  
-  const goalInputHandler = (enteredText) => {
-    setEnteredGoal(enteredText);
-  }
-  const addGoalHandler = () => {
-    //setCourseGoals([...courseGoals, enteredGoal]);
-    setCourseGoals(currentGoals => [...currentGoals, {key: Math.random().toString(), value: enteredGoal}]);
-  }
-  return (
-    <View style={styles.container}>
-      <View style ={styles.layout}>
-        <TextInput placeholder = "course goal" style = {styles.input} onChangeText = {goalInputHandler} value = {enteredGoal}>
+  const [isAddMode, setIsAddMode] = useState(false);
 
-        </TextInput>
-        <Button title = "Add Me" onPress = {addGoalHandler}/>
-      </View>
-      <FlatList data={courseGoals} renderItem = {itemData =>(
-        <View style = {styles.list}>
-          <Text>{itemData.item.value}</Text>
-        </View>
-      )}/>
+  const addGoalHandler = (goalTitle) => {
+    //setCourseGoals([...courseGoals, enteredGoal]);
+    setCourseGoals(currentGoals => [...currentGoals, {key: Math.random().toString(), value: goalTitle}]);
+    setIsAddMode(false);
+  }
+  const removeGoalHandler = (goalID) =>{
+    setCourseGoals(currentGoals => {
+      return currentGoals.filter((goal) => goal.key != goalID);
+    });
+  };
+
+  return (
+    
+    <View style={styles.container}>
+      {/*<Button title = "Add New Goal!" onPress = {() => setIsAddMode(true)}/>*/}
+      <GoalInput onAddGoal={addGoalHandler} visible = {isAddMode}/>
+      <FlatList data={courseGoals} renderItem = {itemData =>( 
+          <GoalItem id = {itemData.item.key} onDelete = {removeGoalHandler} title = {itemData.item.value}/> )}/>
     </View>
   );
 }
@@ -34,21 +33,5 @@ export default function App() {
 const styles = StyleSheet.create({
   container: {
     padding: 60
-  },
-  input:{
-    borderBottomColor: 'black',
-    borderBottomWidth: 1,
-    width: '80%'
-  },
-  layout: {
-    flexDirection: 'row',
-    alignContent: 'space-between',
-    justifyContent: 'space-between'
-  },
-  list:{
-    padding:10,
-    backgroundColor: 'gray',
-    borderBottomColor: 'black',
-    borderWidth: 1
   }
 });
