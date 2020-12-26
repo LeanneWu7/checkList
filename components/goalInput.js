@@ -15,7 +15,6 @@ const GoalInput = props =>{
     };
       
     return (
-      //<Modal visible = {props.visible} animationType="slide"> 
         <View style ={styles.layout}>
           <TextInput placeholder = "course goal" style = {styles.input} onChangeText = {goalInputHandler} value = {enteredGoal}>
 
@@ -26,7 +25,6 @@ const GoalInput = props =>{
           </View>
           
         </View>
-      //</Modal>
     );
 };
 
